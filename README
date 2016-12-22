@@ -1,0 +1,27 @@
+Usage:
+
+Provide YouTube video link or ID, optionally specify a max 15-second time period, and submit for colorization.
+
+Script assumes video is black and white. Submitting a color video will just be wasteful.
+
+Audio is lost and not in-scope, yet.
+
+Processed videos are auto-uploaded to YouTube? Or on own server? Links provided in the web interface and via email after processing completes.
+
+Limitations:
+
+YouTube input
+10 second max
+640x480 max resolution
+mp4 out mimetype
+5 minute min wait
+Web/email dl link
+ETA and ATA
+List recent colorizations
+Credits
+
+Improvements:
+
+Parallel processing of colorization
+Audio compatibility
+Time limit removal
