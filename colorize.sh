@@ -5,14 +5,16 @@ rootdir=$(pwd);
 
 # Dirs
 frames_mono_dir="$rootdir/frames/mono";
+frames_trans_dir="$rootdir/frames/trans";
 frames_color_dir="$rootdir/frames/color";
 
 # Frames
 frames_mono="$frames_mono_dir/*.png";
+#frames_trans="$frames_trans_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_filename="hOnc45AZVHo_lq.mp4";
+video_filename="hOnc45AZVHo_hq.mp4";
 input="$rootdir/input/$video_filename";
 output_dir="$rootdir/output";
 output="$output_dir/$video_filename";
@@ -21,9 +23,8 @@ output="$output_dir/$video_filename";
 fps=24;
 
 # Create proc directories.
-rm -rf "$frames_mono_dir" "$frames_color_dir" "$output_dir" || true;
-mkdir -p "$frames_mono_dir" "$frames_color_dir" "$output_dir";
-# chmod -R 777 "$frames_mono_dir" "$frames_color_dir" "$output_dir";
+rm -rf "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir" || true;
+mkdir -p "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir";
 
 # Grab remote video
 #youtube-dl https://www.youtube.com/watch?v=n5UnEB23YCI -f 'bestvideo[height<=480]+bestaudio/best[height<=480]'
@@ -34,7 +35,9 @@ mkdir -p "$frames_mono_dir" "$frames_color_dir" "$output_dir";
 # Loop thru monos, colorize, and save.
 for frame in $frames_mono; do
   filename=$(basename "$frame");
-  th colorize.lua "$frames_mono_dir/$filename" "$frames_color_dir/$filename";
+  # Transform to smaller frames. (requires imagemagick)
+  convert "$frames_mono_dir/$filename" -resize 480x480 "$frames_trans_dir/$filename";
+  th colorize.lua "$frames_trans_dir/$filename" "$frames_color_dir/$filename";
 done;
 
 # Assemble color into output vid.
