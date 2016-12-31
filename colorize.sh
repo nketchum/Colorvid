@@ -12,9 +12,10 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-input="$rootdir/input/n5UnEB23YCI.mp4";
+video_filename="hOnc45AZVHo_lq.mp4";
+input="$rootdir/input/$video_filename";
 output_dir="$rootdir/output";
-output="$output_dir/out.mp4";
+output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
