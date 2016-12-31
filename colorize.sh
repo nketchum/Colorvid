@@ -13,7 +13,7 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_id="hOnc45AZVHo";
+video_id="SuQb_2NHAwo";
 video_filename="$video_id.mp4";
 input_dir="$rootdir/input";
 input="$input_dir/$video_filename";
