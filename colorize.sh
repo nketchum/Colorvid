@@ -24,7 +24,7 @@ output="$output_dir/$video_filename";
 fps=24;
 
 # Create proc directories.
-rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir" || true;
+rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
 mkdir -p "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir";
 
 # Download video. (requires youtube-dl)
