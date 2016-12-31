@@ -38,3 +38,6 @@ done;
 
 # Assemble color into output vid.
 ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -c:v libx264 "$output";
+
+# Remove frames proc directory.
+rm -rf "$rootdir/frames" || true;
