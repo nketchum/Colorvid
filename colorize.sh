@@ -13,8 +13,10 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_filename="hOnc45AZVHo_hq.mp4";
-input="$rootdir/input/$video_filename";
+video_id="hOnc45AZVHo";
+video_filename="$video_id.mp4";
+input_dir="$rootdir/input";
+input="$input_dir/$video_filename";
 output_dir="$rootdir/output";
 output="$output_dir/$video_filename";
 
@@ -22,8 +24,11 @@ output="$output_dir/$video_filename";
 fps=24;
 
 # Create proc directories.
-rm -rf "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir" || true;
-mkdir -p "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir";
+rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir" || true;
+mkdir -p "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir";
+
+# Download video. (requires youtube-dl)
+youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo/best' -o "$input";
 
 # Make monochrome frames from source vid.
 /usr/local/bin/ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
@@ -40,4 +45,4 @@ done;
 ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -c:v libx264 "$output";
 
 # Remove frames proc directory.
-rm -rf "$rootdir/frames" || true;
+rm -rf "$input_dir" "$rootdir/frames" || true;
