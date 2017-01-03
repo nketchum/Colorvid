@@ -13,7 +13,7 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_id="lkqz3lpUBp0";
+video_id="nzGL879FvME";
 video_filename="$video_id.mp4";
 input_dir="$rootdir/input";
 input="$input_dir/$video_filename";
@@ -22,7 +22,7 @@ output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
-frames_maxnum=1000;
+frames_maxnum=2000;
 
 # Create proc directories.
 rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
