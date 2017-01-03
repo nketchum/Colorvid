@@ -13,7 +13,7 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_id="SuQb_2NHAwo";
+video_id="Oty4jchgvwM";
 video_filename="$video_id.mp4";
 input_dir="$rootdir/input";
 input="$input_dir/$video_filename";
@@ -22,6 +22,7 @@ output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
+frames_maxnum=1000;
 
 # Create proc directories.
 rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
@@ -34,11 +35,17 @@ youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo/best' -o "$
 /usr/local/bin/ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
 
 # Loop thru monos, colorize, and save.
+count=0;
 for frame in $frames_mono; do
-  filename=$(basename "$frame");
-  # Transform to smaller frames. (requires imagemagick)
-  convert "$frames_mono_dir/$filename" -resize 480x480 "$frames_trans_dir/$filename";
-  th colorize.lua "$frames_trans_dir/$filename" "$frames_color_dir/$filename";
+  if [ $count -lt $frames_maxnum ]; then
+    filename=$(basename "$frame");
+    # Transform to smaller frames. (requires imagemagick)
+    convert "$frames_mono_dir/$filename" -resize 480x480 "$frames_trans_dir/$filename";
+    th colorize.lua "$frames_trans_dir/$filename" "$frames_color_dir/$filename";
+    count=$((count+1));
+  else
+    break;
+  fi;
 done;
 
 # Assemble color into output vid.
