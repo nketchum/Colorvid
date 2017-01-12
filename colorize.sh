@@ -22,7 +22,7 @@ output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
-frames_maxnum=2000;
+frames_maxnum=5000;
 
 # Create proc directories.
 rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
@@ -34,19 +34,28 @@ youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo/best' -o "$
 # Make monochrome frames from source vid.
 /usr/local/bin/ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
 
-# Loop thru monos, colorize, and save.
+# Transform to smaller frames for colorizing (requires imagemagick/convert).
 count=0;
 for frame in $frames_mono; do
   if [ $count -lt $frames_maxnum ]; then
     filename=$(basename "$frame");
-    # Transform to smaller frames. (requires imagemagick)
     convert "$frames_mono_dir/$filename" -resize 480x480 "$frames_trans_dir/$filename";
-    th colorize.lua "$frames_trans_dir/$filename" "$frames_color_dir/$filename";
     count=$((count+1));
   else
     break;
   fi;
 done;
+
+# Parallel process the colorization step.
+filenames_input=$(find "$frames_trans_dir" -type f -name "*.png");
+
+args='';
+for arg1 in $filenames_input; do
+  arg2=$(echo "$arg1" | sed 's/trans/color/');
+  args=$(printf "$arg1 $arg2\n$args");
+done;
+
+printf "%s\n" "$args" | parallel --colsep ' ' th colorize.lua {1} {2};
 
 # Assemble color into output vid.
 ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -c:v libx264 "$output";
