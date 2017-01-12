@@ -13,7 +13,7 @@ frames_mono="$frames_mono_dir/*.png";
 frames_color="$frames_color_dir/*.png";
 
 # Input-output
-video_id="3FxNXYtDtJc";
+video_id=$1;
 video_filename="$video_id.mp4";
 input_dir="$rootdir/input";
 input="$input_dir/$video_filename";
@@ -22,7 +22,7 @@ output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
-frames_maxnum=5000;
+frames_maxnum=10000;
 
 # Create proc directories.
 rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
@@ -55,7 +55,7 @@ for arg1 in $filenames_input; do
   args=$(printf "$arg1 $arg2\n$args");
 done;
 
-printf "%s\n" "$args" | parallel --colsep ' ' th colorize.lua {1} {2};
+printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua {1} {2};
 
 # Assemble color into output vid.
 ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -c:v libx264 "$output";
