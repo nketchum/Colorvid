@@ -32,7 +32,7 @@ mkdir -p "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir"
 youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo/best' -o "$input";
 
 # Make monochrome frames from source vid.
-/usr/local/bin/ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
+ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
 
 # Transform to smaller frames for colorizing (requires imagemagick/convert).
 count=0;
