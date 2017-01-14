@@ -29,7 +29,7 @@ rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" |
 mkdir -p "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" "$output_dir";
 
 # Download video. (requires youtube-dl)
-youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo/best' -o "$input";
+youtube-dl "https://www.youtube.com/watch?v=$video_id" -f 'bestvideo+bestaudio/best' -o "$input";
 
 # Make monochrome frames from source vid.
 ffmpeg -i "$input" -r $fps "$frames_mono_dir/%04d.png";
