@@ -22,7 +22,9 @@ output="$output_dir/$video_filename";
 
 # Framerate (affects performance)
 fps=24;
-frames_maxnum=10000;
+
+# Max length (14,400 frames at 24 fps is 10 min)
+frames_maxnum=14400;
 
 # Create proc directories.
 rm -rf "$input_dir" "$frames_mono_dir" "$frames_trans_dir" "$frames_color_dir" || true;
@@ -47,14 +49,12 @@ for frame in $frames_mono; do
 done;
 
 # Parallel process the colorization step.
-filenames_input=$(find "$frames_trans_dir" -type f -name "*.png");
-
 args='';
+filenames_input=$(find "$frames_trans_dir" -type f -name "*.png");
 for arg1 in $filenames_input; do
   arg2=$(echo "$arg1" | sed 's/trans/color/');
   args=$(printf "$arg1 $arg2\n$args");
 done;
-
 printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua {1} {2};
 
 # Assemble color into output vid.
