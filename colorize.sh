@@ -58,7 +58,7 @@ done;
 printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua {1} {2};
 
 # Assemble color into output vid.
-ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -i "$input" -map 0:v -map 1:a -c copy -shortest "$output";
+ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -i "$input" -map 0:v -map 1:a -c:v libx264 "$output";
 
 # Remove frames proc directory.
 rm -rf "$input_dir" "$rootdir/frames" || true;
