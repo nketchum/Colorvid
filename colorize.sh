@@ -55,7 +55,7 @@ for arg1 in $filenames_input; do
   arg2=$(echo "$arg1" | sed 's/trans/color/');
   args=$(printf "%s %s\n%s" "$arg1" "$arg2" "$args");
 done;
-printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua {1} {2};
+printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua "{1}" "{2}";
 
 # Assemble color into output vid.
 ffmpeg -framerate $fps -pattern_type glob -i "$frames_color" -i "$input" -map 0:v -map 1:a -c:v libx264 "$output";
