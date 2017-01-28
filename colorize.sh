@@ -53,7 +53,7 @@ args='';
 filenames_input=$(find "$frames_trans_dir" -type f -name "*.png");
 for arg1 in $filenames_input; do
   arg2=$(echo "$arg1" | sed 's/trans/color/');
-  args=$(printf "$arg1 $arg2\n$args");
+  args=$(printf "%s %s\n%s" "$arg1" "$arg2" "$args");
 done;
 printf "%s\n" "$args" | parallel -j+0 --eta --colsep ' ' th colorize.lua {1} {2};
 
